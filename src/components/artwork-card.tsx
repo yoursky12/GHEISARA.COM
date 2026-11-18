@@ -2,7 +2,9 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Artwork } from "@/lib/catalog";
-export function Palette({ colors }: { colors: string[] }) {
+import { CopyablePalette } from "./copyable-palette";
+export function Palette({ colors, showCodes = false }: { colors: string[]; showCodes?: boolean }) {
+  if (showCodes) return <CopyablePalette colors={colors}/>;
   return <span className="palette" aria-label={`Palet warna: ${colors.join(", ")}`}>{colors.map(c => <span key={c} style={{ background: c }} title={c}/>)}</span>;
 }
 export function ArtworkCard({ artwork: a, index = 0 }: { artwork: Artwork; index?: number }) {

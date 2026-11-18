@@ -25,7 +25,8 @@ export const taxonomies = { era: ["Modern", "Klasik", "Kontemporer"], medium: ["
 export function filterArtworks(query: Query, input: Artwork[] = artworks) {
   const term = first(query, "q").trim().toLocaleLowerCase("id");
   const result = input.filter(a => {
-    if (term && !`${a.title} ${a.artist} ${a.style}`.toLocaleLowerCase("id").includes(term)) return false;
+    const usernames = a.creators?.map(c => c.username).join(" ") ?? a.username;
+    if (term && !`${a.title} ${a.artist} ${a.style} ${usernames}`.toLocaleLowerCase("id").includes(term)) return false;
     return (Object.keys(taxonomies) as (keyof typeof taxonomies)[]).every(key => {
       const selected = values(query, key).filter(v => taxonomies[key].includes(v));
       return !selected.length || (key === "style" ? (a.styles ?? [a.style]).some(s => selected.includes(s)) : selected.includes(a[key] ?? "CC0"));

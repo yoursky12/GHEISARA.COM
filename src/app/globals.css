@@ -1,5 +1,5 @@
 ﻿@import "tailwindcss";
-:root{--navy:#12376b;--ink:#22334b;--muted:#75808e;--line:#e2e8f0;--surface:#f8fafc;--blue:#0ea5e9}
+:root{--navy:#12376b;--ink:#22334b;--muted:#75808e;--line:#e2e8f0;--surface:#f8fafc;--blue:#0ea5e9;--header-bg:#e0edf7;--footer-bg:#153a6d;--chrome-line:#c3d7e8}
 
 *{box-sizing:border-box}
 body{margin:0;background:#fff;color:var(--ink);font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
@@ -17,7 +17,7 @@ h1,h2,h3,p{margin:0}
 h1,h2,h3{font-weight:500}
 em{font-weight:400}
 main{min-height:70vh}
-.header{height:88px;padding:0 3.5%;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:34px;background:#fff}
+.header{height:88px;padding:0 3.5%;border-bottom:1px solid var(--chrome-line);display:flex;align-items:center;gap:34px;background:var(--header-bg)}
 .brand{display:flex;align-items:center;font-family:Georgia,serif;font-size:29px;letter-spacing:-1.8px;font-weight:700;color:var(--navy);white-space:nowrap}
 .brand-dot{color:#3e93aa}
 .brand-symbol{font-size:39px;line-height:1;position:relative;margin-right:12px;letter-spacing:-5px}
@@ -400,3 +400,26 @@ main{min-height:70vh}
 .landing-shell{background:#fff;color:#173c6b}.landing-header{max-width:1440px;margin:0 auto;min-height:82px;padding:16px 38px;display:flex;align-items:center;gap:45px;border-bottom:1px solid #edf2f7}.landing-header .brand{font-family:Inter,"Segoe UI",Arial,sans-serif;font-size:26px;letter-spacing:-1px;font-weight:650}.landing-header nav{display:flex;align-items:center;gap:32px}.landing-header nav a{font-size:11px;color:#7185a2;min-height:44px;display:inline-flex;align-items:center}.landing-header nav a:hover{color:#0a91c2}.landing-help{font-size:10px;color:#168ac2;margin-left:auto;min-height:44px;display:flex;align-items:center;white-space:nowrap}.landing-login{display:flex;align-items:center;justify-content:center;gap:9px;font-size:11px;min-height:42px;padding:10px 15px;border:1px solid #dce8f2;border-radius:5px;white-space:nowrap}.landing-footer{max-width:1440px;margin:auto;display:flex;align-items:center;gap:28px;padding:30px 38px 40px;border-top:1px solid #e8eef4}.landing-footer .brand{font:600 23px Inter,"Segoe UI",Arial,sans-serif;letter-spacing:-1px}.landing-footer p{font-size:11px;color:#7488a2;line-height:1.8}.landing-footer>span{font-size:10px;color:#7e90a8;margin-left:auto}.landing-footer>a:last-child{font-size:11px;display:flex;gap:8px;align-items:center;min-height:44px}.landing-shell :focus-visible{outline:2px solid #079ed9;outline-offset:5px}
 @media(max-width:900px){.landing-header{padding:14px 28px;gap:25px}.landing-header nav{gap:20px}.landing-footer{padding:26px 28px;gap:20px}.landing-footer p{max-width:190px}}
 @media(max-width:600px){.landing-header{padding:14px 24px;gap:12px;flex-wrap:wrap;min-height:110px}.landing-header .brand{font-size:23px;margin-right:auto}.landing-help{font-size:9px;margin-left:0}.landing-login{font-size:10px;min-height:40px;padding:9px 12px}.landing-header nav{order:4;flex-basis:100%;gap:28px}.landing-header nav a{font-size:10px;min-height:34px}.landing-footer{padding:22px 26px;gap:10px 20px;flex-wrap:wrap}.landing-footer p{max-width:none;flex-basis:100%;order:3}.landing-footer>span{font-size:9px}.landing-footer>a:last-child{font-size:10px;order:4}}
+
+/* Shared blue palette for the welcome page and application chrome. */
+.landing-header{background:var(--header-bg);border-bottom-color:var(--chrome-line);box-shadow:0 0 0 100vmax var(--header-bg);clip-path:inset(0 -100vmax)}
+.landing-header nav a,.nav-link{color:#476584}
+.landing-help{color:#17658c}
+.landing-login{background:#cbdff0;border-color:#a9c7df;color:var(--navy)}
+.landing-login:hover{background:#bdd6eb}
+.mobile-navigation{background:var(--header-bg);border-bottom-color:var(--chrome-line)}
+.footer,.landing-footer{background:var(--footer-bg);border-top-color:#2c5280;color:#c8d9eb}
+.landing-footer{box-shadow:0 0 0 100vmax var(--footer-bg);clip-path:inset(0 -100vmax)}
+.footer-wordmark,.landing-footer .brand{color:#f0f7ff}
+.landing-footer .brand-dot{color:#85d7f4}
+.landing-footer p,.landing-footer>span{color:#c8d9eb}
+.footer>a,.landing-footer>a:last-child{color:#a1dbef}
+.footer>a:hover,.landing-footer>a:last-child:hover{color:#fff}
+
+.header,.landing-header{position:sticky;top:0;z-index:80}
+.palette-labeled{display:inline-flex;flex-wrap:wrap;gap:12px 16px;min-width:0}
+.palette-color{position:relative;display:inline-flex}
+.palette-swatch{display:block;width:32px;height:32px;padding:0;border:1px solid #12376b26;border-radius:50%;cursor:pointer}
+.palette-swatch:hover{border-color:#12376b}
+.palette-swatch:focus-visible{outline:2px solid #12376b;outline-offset:3px}
+.palette-copy-status{position:absolute;top:calc(100% + 4px);left:50%;transform:translateX(-50%);font-size:10px;color:#476584;white-space:nowrap;pointer-events:none}
