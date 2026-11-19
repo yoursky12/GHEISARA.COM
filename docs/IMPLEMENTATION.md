@@ -28,7 +28,7 @@
 | AUTH-01–07 | `/auth/[action]` | Notice kesiapan, tidak mengumpulkan password atau membuat sesi palsu |
 | UPLOAD/DRAFT/PUBLISH/DNA | Unggah menuju login | Belum diimplementasikan; tidak menyimpan file atau menghitung DNA palsu |
 | REQUEST/HUB/WORKSPACE/APPROVAL | `/collab` | Halaman pengantar status; layanan privat belum diimplementasikan |
-| LEARN-01–04 | `/learn` | Katalog rencana; materi belum tersedia, tidak membuat progres/kuis palsu |
+| LEARN-01–04 | Studio | Rencana pembelajaran. Tautan lama `/learn` mengarah ke `/studio`. |
 | State/a11y | Empty, 404, fallback gambar, focus, skip link, native details/checkbox | CSS responsif 4/2/1; loading/error fetch belum diperlukan untuk katalog lokal sinkron; pengujian browser/keyboard/360px belum dilakukan |
 
 ## Arsitektur
@@ -45,7 +45,7 @@ Validasi tahap ini: `npm run build` lulus (termasuk TypeScript), lima unit test 
 2. Implementasikan satu alur akun nyata: register → verifikasi → login → draft/media → review → publish → profil/DNA/discovery, dengan transaksi dan validasi server.
 3. Apresiasi, follow, koleksi, komentar dan ranking dari sumber data yang sama; test integrasi ACL/idempotensi dan E2E alur personal.
 4. Pengajuan → accept transaksional → workspace privat/vault/chat → final → approval dua anggota yang mengikat versi → satu karya publik.
-5. Materi Pathfinder yang disahkan, progres server, notifikasi, serta hardening operasional/aksesibilitas.
+5. Materi pembelajaran Studio yang disahkan, progres server, notifikasi, serta hardening operasional/aksesibilitas.
 
 Keputusan terbuka PRD tetap terbuka, termasuk kuota/biaya vault, lisensi bersama, retensi, unpublish/sengketa, provider dan materi. Tidak ada klaim SLA, keamanan produksi, atau seluruh P0 selesai.
 

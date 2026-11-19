@@ -10,7 +10,7 @@ export type Project = { id: string; invitation: string; members: string[]; messa
 export type Store = { users: User[]; sessions: { hash: string; user: string; expires: number }[]; invitations: Invitation[]; projects: Project[]; artworks: MemberArtwork[]; follows: { user: string; creator: string }[]; appreciations: { user: string; artwork: string; at: string }[]; collections: Collection[]; comments: CommunityComment[]; notifications: Notice[] };
 // Local, single-server persistence. Use a transactional shared database before scaling.
 export function store<T>(fn: (data: Store) => T, write = false): T {
-  const directory = join(process.cwd(), ".data");
+  const directory = process.env.VERCEL ? "/tmp/.data" : join(process.cwd(), ".data");
   const path = join(directory, "collab.json");
   let data: Store;
   try { data = JSON.parse(readFileSync(path, "utf8")); }

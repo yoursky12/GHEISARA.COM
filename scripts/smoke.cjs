@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const base = process.env.SMOKE_BASE_URL || 'http://localhost:3100';
 (async () => {
-  for (const route of ['/art/for-you', '/art/following', '/art/popular', '/art/collaborations', '/artworks/water-lilies', '/creators/claude-monet', '/learn', '/collab', '/studio', '/notifications', '/auth/login']) {
+  for (const route of ['/art/for-you', '/art/following', '/art/popular', '/art/collaborations', '/artworks/water-lilies', '/creators/claude-monet', '/collab', '/studio', '/notifications', '/auth/login']) {
     const response = await fetch(base + route);
     assert.equal(response.status, 200, route);
     assert.match(await response.text(), /<html lang="id"/);
@@ -19,6 +19,9 @@ const base = process.env.SMOKE_BASE_URL || 'http://localhost:3100';
   assert.equal((await fetch(base + '/artworks/missing')).status, 404);
   assert.equal((await fetch(base + '/creators/missing')).status, 404);
   assert.equal((await fetch(base + '/art/missing')).status, 404);
+  const legacyStudio = await fetch(base + '/learn', { redirect: 'manual' });
+  assert.equal(legacyStudio.status, 307);
+  assert.equal(legacyStudio.headers.get('location'), '/studio');
   const redirect = await fetch(base + '/studio/artworks/new', { redirect: 'manual' });
   assert.equal(redirect.status, 307);
   assert.equal(redirect.headers.get('location'), '/auth/login');

@@ -30,7 +30,6 @@ Sumber: https://www.figma.com/design/DOT45zCD9GqlbbqWt9WeOS
 | Karya Kolaborasi | 11:258 | /art/collaborations |
 | Profil & Art DNA, draf | 4:5 | /creators/:username; /studio/drafts |
 | Collab workspace | 4:8 | /collab/projects/:projectId |
-| Pathfinder | 4:11 | /learn |
 | Unggah karya | 4:14 | /studio/artworks/new |
 | Pengajuan kolaborasi | 4:17 | /creators/:username?dialog=collaboration |
 | Login | 7:2 | /auth/login |
@@ -54,7 +53,7 @@ Desktop 1440 px; navy #12376B, aksen #0EA5E9, surface #F8FAFC, border #E2E8F0; I
 2. Profil → Ikuti → Mengikuti → karya publik terbaru.
 3. Login → unggah → metadata → draf/tinjau → terbit → profil/discovery/DNA.
 4. Profil partner → pengajuan → diterima → workspace privat → proses/chat → final → dua persetujuan versi sama → satu karya di kedua profil.
-5. Pathfinder → jalur/kuis → pelajaran/latihan → progres → lanjutkan sesi berikutnya.
+5. Studio → karya dan draf → lanjutkan proses kreatif atau terbitkan karya.
 6. Lupa sandi → email → token → reset → login ulang.
 
 ## 5. Kebutuhan fungsional dan penerimaan
@@ -118,7 +117,7 @@ PROFILE-01–03: pemilik edit bio/lokasi/avatar/cover/link HTTP(S)/Open for Coll
 
 DNA-01–04: DESAIN persentase gaya/palet dari karya terbit, draf dikecualikan. Baseline setiap karya bobot 1 dibagi rata gaya; normalisasi 100%, pembulatan sisa terbesar. Karya bersama satu kali per coauthor. Palet agregat deterministik bucket baseline, clustering P1. Simpan algorithmVersion/jumlah karya. Update publish/gaya/unpublish, baseline ≤60 detik. Kosong → empty state, bukan gaya karangan.
 
-STUDIO-01: karya/draf sendiri, status, unggah, link Hub/Pathfinder.
+STUDIO-01: karya/draf sendiri, status, unggah, tautan Collab Hub.
 
 AC: ID tebakan tidak membuka draf; draf tidak mengubah DNA; kosong tanpa pembagian nol; count sesuai data publik.
 
@@ -168,7 +167,7 @@ EXPORT-01: P0 final raster disetujui dan vault berizin; native gabungan P1.
 
 AC: final kosong/1 dari 2/approval beda versi tidak terbit; update final membuat persetujuan baru 0/2; race publish satu artwork; metrik sama semua profil; nonanggota ditolak termasuk media/channel.
 
-### 5.12 LEARN — Pathfinder \[P0 inti/P1 personalisasi\]
+### 5.12 Studio — Pembelajaran \[P0 inti/P1 personalisasi\]
 
 DESAIN: kuis 5 pertanyaan ±2 menit, Beginner/Intermediate/Advanced; Impressionism 8 pelajaran ±2 jam, Modern Art 6 ±90 menit, Surrealism 10 ±3 jam; teknik/brush/latihan; progres mingguan/streak; daily prompt empat warna. Jumlah/durasi konten contoh sampai materi disahkan.
 
@@ -218,7 +217,7 @@ Ukur funnel registrasi→aksi; discovery→detail→follow/like/save; upload com
 
 ## 11. Delivery dan test
 
-A fondasi auth/schema/media/shell → B karya personal/discovery/profil/draf/DNA → C pengajuan/Hub/vault/chat/approval/publikasi → D Pathfinder/progres/notifikasi/hardening → E P1 kuis/personalisasi/koleksi publik/ASE/engine editor sesuai keputusan. Materi/provider adalah dependency, bukan tombol mock.
+A fondasi auth/schema/media/shell → B karya personal/discovery/profil/draf/DNA → C pengajuan/Hub/vault/chat/approval/publikasi → D pembelajaran di Studio/progres/notifikasi/hardening → E P1 kuis/personalisasi/koleksi publik/ASE/engine editor sesuai keputusan. Materi/provider adalah dependency, bukan tombol mock.
 
 E2E wajib: register/verifikasi/session/logout; reset generik+expired/reused; filter/back/pagination; follow/unfollow/dedup coauthor; upload/draft/reload/review/publish; MIME palsu/oversize/network retry; ranking batas waktu/tie; accept race satu workspace; nonanggota ditolak semua endpoint/channel/media; final 1/2/mismatch ditolak, 2/2 satu karya; final/lisensi berubah invalidasi approval; like/comment/save idempotent; progress lintas sesi/streak midnight; keyboard/360/768/1440.
 

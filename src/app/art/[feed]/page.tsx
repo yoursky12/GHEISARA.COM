@@ -1,7 +1,7 @@
 ﻿import { ArtImage } from "@/components/art-image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, ArrowUpRight, BookOpen, Compass, Fingerprint, Layers, Search, Sparkles, Users } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Brush, Compass, Fingerprint, Layers, Search, Sparkles, Users } from "lucide-react";
 import { ArtworkCard } from "@/components/artwork-card";
 import { Filters } from "@/components/filters";
 import { filterArtworks, first, queryString, type Query } from "@/lib/catalog";
@@ -19,7 +19,7 @@ export default async function Discovery({ params, searchParams }: { params: Prom
   const items = filtered.slice((page - 1) * 20, page * 20);
   const hasQuery = Object.keys(query).some(k => ["q", "era", "medium", "style", "license"].includes(k));
   return <div className="page-wrap">
-    <div className="page-intro"><div><div className="eyebrow"><span/> THE ART OF DISCOVERY</div><h1>Temukan karya. <em>Rasakan ceritanya.</em></h1><p>Jelajahi perspektif baru, temukan inspirasi, dan terhubung melalui seni.</p></div><Link href="/learn" className="pathfinder-link"><BookOpen size={17}/><span>Belajar bersama Pathfinder</span><ArrowUpRight size={17}/></Link></div>
+    <div className="page-intro"><div><div className="eyebrow"><span/> THE ART OF DISCOVERY</div><h1>Temukan karya. <em>Rasakan ceritanya.</em></h1><p>Jelajahi perspektif baru, temukan inspirasi, dan terhubung melalui seni.</p></div><Link href="/studio" className="studio-link" aria-label="Buka Studio"><Brush size={17}/><span>Buka Studio</span><ArrowUpRight size={17}/></Link></div>
     <nav className="discovery-tabs" aria-label="Jelajahi karya">{tabs.map(t => <Link href={`/art/${t.id}`} key={t.id} className={`${feed === t.id ? "selected" : ""} ${t.id === "collaborations" ? "collab-tab" : ""}`} aria-current={feed === t.id ? "page" : undefined}><t.icon size={16}/>{t.title}{t.id === "collaborations" && <span>BERSAMA</span>}</Link>)}</nav>
     {feed === "for-you" && !hasQuery && <section className="editorial-hero" aria-labelledby="hero-title"><ArtImage src="/art/monet.jpg" alt="Detail teratai dan pantulan air dalam lukisan Claude Monet" width="1400" height="700" fetchPriority="high"/><div className="hero-shade"/><div className="hero-content"><span className="hero-label"><span/> PILIHAN EDITORIAL</span><h2 id="hero-title">Ada keindahan<br/>di antara <em>hening.</em></h2><p>Warna yang berbisik. Cahaya yang singgah.<br/>Jelajahi dunia melalui mata para impresionis.</p><Link href="/art/for-you?style=Impresionisme" className="button hero-button">Jelajahi koleksi <ArrowUpRight size={17}/></Link></div><div className="hero-credit"><span>DALAM SOROTAN</span><strong>Water Lilies, 1906</strong><small>Claude Monet · Domain publik</small></div><div className="hero-number">01 <span>/ KOLEKSI STUDI</span></div></section>}
     {feed === "for-you" && !hasQuery && <div className="inspiration-strip"><span className="strip-icon"><Fingerprint size={27}/></span><div><strong>Selera senimu punya cerita.</strong><p>Kenali warna dan gaya yang membentuk Art DNA-mu.</p></div><Link href={user ? `/creators/${usernameOf(user)}` : "/auth/login"}>Temukan Art DNA-mu <ArrowRight size={16}/></Link><span className="strip-decoration" aria-hidden="true">✳</span></div>}
@@ -33,7 +33,7 @@ export default async function Discovery({ params, searchParams }: { params: Prom
       {items.length > 0 && <div className="gallery-end"><span/><p>Karya kreator dan koleksi studi memiliki label sumber pada halaman detail.</p><span/></div>}
     </section>
     <section className="explore-section"><div className="section-heading"><div><div className="eyebrow">IKUTI RASA INGIN TAHUMU</div><h2>Setiap gaya, dunia yang berbeda.</h2></div><span className="quiet">Mulai dari yang membuatmu penasaran <ArrowUpRight size={16}/></span></div><div className="style-grid">{[{ style: "Impresionisme", image: "monet", note: "Menangkap cahaya, merayakan momen." }, { style: "Postimpresionisme", image: "garden", note: "Warna dan emosi, melampaui kenyataan." }, { style: "Ukiyo-e", image: "wave", note: "Kisah dunia dalam setiap garis." }].map(s => <Link key={s.style} href={`/art/for-you?style=${encodeURIComponent(s.style)}`} className="style-card"><ArtImage src={`/art/${s.image}.jpg`} alt="" loading="lazy" width="600" height="260"/><div><h3>{s.style}</h3><p>{s.note}</p></div><span><ArrowUpRight size={21}/></span></Link>)}</div></section>
-    <section className="bottom-banner"><span className="banner-star" aria-hidden="true">✳</span><div><span className="eyebrow">TUMBUH BERSAMA SENI</span><h2>Rasa ingin tahu adalah awal dari karya hebat.</h2><p>Kenali jalur belajar seni yang ingin kamu jelajahi bersama Pathfinder.</p></div><Link href="/learn" className="button primary">Jelajahi Pathfinder <ArrowUpRight size={17}/></Link></section>
+    <section className="bottom-banner"><span className="banner-star" aria-hidden="true">✳</span><div><span className="eyebrow">TUMBUH BERSAMA SENI</span><h2>Rasa ingin tahu adalah awal dari karya hebat.</h2><p>Kembangkan ide dan simpan proses kreatifmu sebagai draf di Studio.</p></div><Link href="/studio" className="button primary">Buka Studio <ArrowUpRight size={17}/></Link></section>
   </div>;
 }
 
