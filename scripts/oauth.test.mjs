@@ -39,7 +39,7 @@ try {
   };
   const callbackUrl = `http://internal:3000/api/auth/google/callback?code=test&state=${login.searchParams.get('state')}`;
   const result = await callback(new Request(callbackUrl));
-  assert.equal(new URL(result.location).pathname, '/collab');
+  assert.equal(new URL(result.location).pathname, '/art/for-you');
   assert.equal(new URL(result.location).origin, 'http://localhost:3100');
   assert.equal(requests[0].options.body.get('redirect_uri'), login.searchParams.get('redirect_uri'));
   assert.equal(data.users.length, 1);

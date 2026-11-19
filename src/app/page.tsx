@@ -1,7 +1,5 @@
 import { redirect } from "next/navigation";
-import { currentUser } from "@/lib/auth";
 
-export default async function Home() {
-  const user = await currentUser();
-  redirect(user ? "/art/for-you" : "/auth/login");
+export default function Home() {
+  redirect("/art/for-you");
 }

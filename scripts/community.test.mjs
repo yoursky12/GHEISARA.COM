@@ -41,7 +41,7 @@ const ctx = { params: Promise.resolve({id}) };
 const request = (method,body,endpoint=`/api/studio/${id}`) => new Request(origin+endpoint,{method,headers:{origin,'Content-Type':'application/json'},body:JSON.stringify(body)});
 const fields = { title:'First artwork', description:'A real artwork', medium:'Digital', styles:['Abstrak','Ilustrasi'], license:'CC BY 4.0', era:'', revision:0 };
 const redirectAction = async fields => assert.rejects(action(new Map(Object.entries(fields))), /^Error: redirect:/);
-const temporary = mkdtempSync(join(tmpdir(),'gheisara-test-'));
+const temporary = mkdtempSync(join(tmpdir(),'geishara-test-'));
 try {
   process.chdir(temporary);
   const account = user;
@@ -125,6 +125,6 @@ try {
   console.log('Community checks passed: draft ACL/revisions, real image validation/palette, private media, idempotent publishing/likes/follows/saves, comment ownership, DNA, WIB ranking periods, version-bound dual approval and single collaboration publication.');
 } finally {
   process.chdir(root);
-  assert.ok(temporary.startsWith(join(tmpdir(),'gheisara-test-')));
+  assert.ok(temporary.startsWith(join(tmpdir(),'geishara-test-')));
   rmSync(temporary,{recursive:true,force:true});
 }

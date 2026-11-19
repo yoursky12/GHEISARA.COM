@@ -11,7 +11,6 @@ export type Store = { users: User[]; sessions: { hash: string; user: string; exp
 // Local, single-server persistence. Use a transactional shared database before scaling.
 export function store<T>(fn: (data: Store) => T, write = false): T {
   const directory = join(process.cwd(), ".data");
-  mkdirSync(directory, { recursive: true });
   const path = join(directory, "collab.json");
   let data: Store;
   try { data = JSON.parse(readFileSync(path, "utf8")); }
@@ -24,6 +23,7 @@ export function store<T>(fn: (data: Store) => T, write = false): T {
   data.collections ??= []; data.comments ??= []; data.notifications ??= [];
   const result = fn(data);
   if (write) {
+    mkdirSync(directory, { recursive: true });
     const temporary = join(directory, `${randomUUID()}.tmp`);
     writeFileSync(temporary, JSON.stringify(data), { mode: 0o600 });
     renameSync(temporary, path);

@@ -1,10 +1,10 @@
-# PRD — Gheisara
+# PRD — geishara
 
 > Versi 1.0 · 10 November 2026 · Draf implementasi. Dokumen pendamping PRD.md. Acuan seluruh modul; bukan pernyataan fitur telah diimplementasikan. Versi Markdown lengkap pada repositori memuat requirement ID, kontrak layanan, dan skenario uji lebih terperinci.
 
 ## 1. Produk dan aturan pembacaan
 
-Gheisara adalah aplikasi web penemuan karya seni, identitas kreator, pembelajaran, dan kolaborasi privat hingga publikasi bersama. Bahasa produk Indonesia; desktop referensi utama, aplikasi tetap responsif.
+geishara adalah aplikasi web penemuan karya seni, identitas kreator, pembelajaran, dan kolaborasi privat hingga publikasi bersama. Bahasa produk Indonesia; desktop referensi utama, aplikasi tetap responsif.
 
 Tujuan: menemukan karya/kreator melalui metadata dan rekomendasi; membangun profil dan Art DNA; menerbitkan karya; mempertemukan dua kreator; menjaga atribusi dan persetujuan bersama; menyediakan perjalanan belajar.
 

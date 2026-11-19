@@ -1,4 +1,4 @@
-﻿# Gheisara
+﻿# geishara
 
 Platform penemuan seni, identitas kreator, pembelajaran, dan kolaborasi. Dibangun dengan Next.js 16.4.5 + React + TypeScript.
 

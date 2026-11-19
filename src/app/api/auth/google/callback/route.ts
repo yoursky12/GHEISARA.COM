@@ -40,6 +40,6 @@ export async function GET(request: Request) {
       data.sessions.push({ hash: hash(session), user: user.id, expires: Date.now() + 7 * 86400000 });
     }, true);
     jar.set("geishara_session", session, { ...cookieOptions, maxAge: 7 * 86400 });
-    return NextResponse.redirect(new URL("/collab", redirectUri));
+    return NextResponse.redirect(new URL("/art/for-you", redirectUri));
   } catch { return fail(); }
 }

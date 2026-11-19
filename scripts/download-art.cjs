@@ -24,7 +24,7 @@ const artworks = {
     sources.push({ slug, file: title, url, page: `https://commons.wikimedia.org/wiki/File:${encodeURIComponent(file)}` });
     try { await access(`public/art/${slug}.jpg`); console.log(`${slug}: already downloaded`); continue; } catch {}
     await new Promise(resolve => setTimeout(resolve, 2500));
-    const response = await fetch(url, { headers: { 'User-Agent': 'GheisaraDevelopment/0.1 (public-domain study collection)' }, signal: AbortSignal.timeout(25000) });
+    const response = await fetch(url, { headers: { 'User-Agent': 'geisharaDevelopment/0.1 (public-domain study collection)' }, signal: AbortSignal.timeout(25000) });
     if (!response.ok || !response.headers.get('content-type')?.startsWith('image/')) throw new Error(`${slug}: ${response.status} ${url}`);
     const data = Buffer.from(await response.arrayBuffer());
     await sharp(data).resize({ width: 1280, withoutEnlargement: true }).jpeg({ quality: 85 }).toFile(`public/art/${slug}.jpg`);

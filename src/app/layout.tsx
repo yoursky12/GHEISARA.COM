@@ -5,8 +5,8 @@ import { currentUser } from "@/lib/auth";
 import { usernameOf } from "@/lib/community";
 import { store } from "@/lib/collab-store";
 export const metadata: Metadata = {
-  title: { default: "Gheisara — Ruang untuk rasa dan karya", template: "%s | Gheisara" },
-  description: "Temukan karya, kenali kreator, dan jelajahi sudut pandang baru bersama Gheisara.",
+  title: { default: "geishara — Ruang untuk rasa dan karya", template: "%s | geishara" },
+  description: "Temukan karya, kenali kreator, dan jelajahi sudut pandang baru bersama geishara.",
 };
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const user = await currentUser();

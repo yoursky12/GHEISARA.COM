@@ -11,7 +11,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   try {
     const file = await readFile(join(process.cwd(), ".data", "media", a.asset));
     const headers: Record<string,string> = { "Content-Type": "image/webp", "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" };
-    if (new URL(request.url).searchParams.get("download") === "1") headers["Content-Disposition"] = `attachment; filename="gheisara-${a.id}.webp"`;
+    if (new URL(request.url).searchParams.get("download") === "1") headers["Content-Disposition"] = `attachment; filename="geishara-${a.id}.webp"`;
     return new Response(new Uint8Array(file), { headers });
   } catch { return new Response(null, { status: 404 }); }
 }

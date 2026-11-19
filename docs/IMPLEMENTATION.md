@@ -1,4 +1,4 @@
-# Status implementasi Gheisara
+# Status implementasi geishara
 
 10 November 2026. Seluruh PRD v1.0 telah dibaca. Ini tahap awal pengembangan lokal, belum memenuhi Definition of Done seluruh P0 dan belum dipublikasikan.
 
