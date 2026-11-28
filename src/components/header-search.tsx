@@ -1,9 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { BiSearch as Search } from "react-icons/bi";
 type Results = { artworks: { id:string;title:string;artist:string }[]; creators: { name:string;username:string }[] };
 export function HeaderSearch() {
+  const suggestionsId = useId();
   const [query,setQuery] = useState(""); const [open,setOpen] = useState(false);
   const [results,setResults] = useState<Results | null>(null);
   useEffect(() => {
@@ -14,5 +15,5 @@ export function HeaderSearch() {
     },300);
     return () => { clearTimeout(timer); controller.abort(); };
   },[query]);
-  return <div className="header-search-wrap" onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) setOpen(false); }}><form action="/art/for-you" className="header-search" role="search"><Search size={17}/><input name="q" value={query} onChange={e => {setQuery(e.target.value);setResults(null);setOpen(true);}} onFocus={() => setOpen(true)} onKeyDown={e => {if(e.key === "Escape")setOpen(false);}} aria-label="Cari karya, kreator, atau gaya" placeholder="Cari inspirasi di sini..." aria-controls="search-suggestions"/><button type="submit" aria-label="Cari">↵</button></form>{open && results && <div className="search-suggestions" id="search-suggestions"><span className="eyebrow">KARYA</span>{results.artworks.map(a => <Link key={a.id} href={`/artworks/${a.id}`} onClick={() => setOpen(false)}><strong>{a.title}</strong><small>{a.artist}</small></Link>)}{!results.artworks.length && <p>Belum ada karya yang cocok.</p>}<span className="eyebrow">KREATOR</span>{results.creators.map(c => <Link key={c.username} href={`/creators/${c.username}`} onClick={() => setOpen(false)}>{c.name}<small>@{c.username}</small></Link>)}<Link href={`/creators?q=${encodeURIComponent(query)}`} onClick={() => setOpen(false)}>Lihat hasil pencarian kreator →</Link></div>}</div>;
+  return <div className="header-search-wrap" onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) setOpen(false); }}><form action="/art/for-you" className="header-search" role="search"><Search size={17}/><input name="q" value={query} onChange={e => {setQuery(e.target.value);setResults(null);setOpen(true);}} onFocus={() => setOpen(true)} onKeyDown={e => {if(e.key === "Escape")setOpen(false);}} aria-label="Cari karya, kreator, atau gaya" placeholder="Cari inspirasi di sini..." aria-controls={open && results ? suggestionsId : undefined}/><button type="submit" aria-label="Cari">↵</button></form>{open && results && <div className="search-suggestions" id={suggestionsId}><span className="eyebrow">KARYA</span>{results.artworks.map(a => <Link key={a.id} href={`/artworks/${a.id}`} onClick={() => setOpen(false)}><strong>{a.title}</strong><small>{a.artist}</small></Link>)}{!results.artworks.length && <p>Belum ada karya yang cocok.</p>}<span className="eyebrow">KREATOR</span>{results.creators.map(c => <Link key={c.username} href={`/creators/${c.username}`} onClick={() => setOpen(false)}>{c.name}<small>@{c.username}</small></Link>)}<Link href={`/creators?q=${encodeURIComponent(query)}`} onClick={() => setOpen(false)}>Lihat hasil pencarian kreator →</Link></div>}</div>;
 }

@@ -1,7 +1,7 @@
 import { revalidatePath } from "next/cache";
 import { currentUser } from "@/lib/auth";
 import { store } from "@/lib/collab-store";
-import { publicationErrors } from "@/lib/community-model";
+import { publicationErrors, publishWithNotices } from "@/lib/community-model";
 import { apiError, sameOrigin } from "@/lib/http";
 export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
   if (!sameOrigin(request)) return apiError("Origin tidak valid.", 403);
@@ -18,7 +18,7 @@ export async function POST(request: Request, { params }: { params: Promise<{ id:
     if (a.revision !== body?.revision) return apiError("Versi tinjauan sudah berubah. Muat ulang draf dan tinjau kembali.", 409, "CONFLICT");
     const errors = publicationErrors(a);
     if (errors.length) return apiError(errors.join(" "));
-    a.status = "published"; a.publishedAt = new Date().toISOString(); a.updatedAt = a.publishedAt;
+    publishWithNotices(data, a);
     return Response.json({ id: a.id });
   }, true);
   if (result.ok) revalidatePath("/", "layout");

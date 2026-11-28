@@ -1,10 +1,11 @@
 ﻿import { ArtImage } from "@/components/art-image";
+import { LandingGallery } from "@/components/landing-gallery";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, ArrowUpRight, Brush, Compass, Fingerprint, Layers, Search, Sparkles, Users } from "lucide-react";
 import { ArtworkCard } from "@/components/artwork-card";
 import { Filters } from "@/components/filters";
-import { filterArtworks, first, queryString, type Query } from "@/lib/catalog";
+import { filterArtworks, first, galleryWorks, queryString, type Query } from "@/lib/catalog";
 import { currentUser } from "@/lib/auth";
 import { feedArtworks, usernameOf } from "@/lib/community";
 const tabs = [{ id: "for-you", title: "Untukmu", icon: Sparkles }, { id: "following", title: "Mengikuti", icon: Users }, { id: "popular", title: "Sedang Populer", icon: Compass }, { id: "collaborations", title: "Karya Kolaborasi", icon: Layers }];
@@ -21,7 +22,12 @@ export default async function Discovery({ params, searchParams }: { params: Prom
   return <div className="page-wrap">
     <div className="page-intro"><div><div className="eyebrow"><span/> THE ART OF DISCOVERY</div><h1>Temukan karya. <em>Rasakan ceritanya.</em></h1><p>Jelajahi perspektif baru, temukan inspirasi, dan terhubung melalui seni.</p></div><Link href="/studio" className="studio-link" aria-label="Buka Studio"><Brush size={17}/><span>Buka Studio</span><ArrowUpRight size={17}/></Link></div>
     <nav className="discovery-tabs" aria-label="Jelajahi karya">{tabs.map(t => <Link href={`/art/${t.id}`} key={t.id} className={`${feed === t.id ? "selected" : ""} ${t.id === "collaborations" ? "collab-tab" : ""}`} aria-current={feed === t.id ? "page" : undefined}><t.icon size={16}/>{t.title}{t.id === "collaborations" && <span>BERSAMA</span>}</Link>)}</nav>
-    {feed === "for-you" && !hasQuery && <section className="editorial-hero" aria-labelledby="hero-title"><ArtImage src="/art/monet.jpg" alt="Detail teratai dan pantulan air dalam lukisan Claude Monet" width="1400" height="700" fetchPriority="high"/><div className="hero-shade"/><div className="hero-content"><span className="hero-label"><span/> PILIHAN EDITORIAL</span><h2 id="hero-title">Ada keindahan<br/>di antara <em>hening.</em></h2><p>Warna yang berbisik. Cahaya yang singgah.<br/>Jelajahi dunia melalui mata para impresionis.</p><Link href="/art/for-you?style=Impresionisme" className="button hero-button">Jelajahi koleksi <ArrowUpRight size={17}/></Link></div><div className="hero-credit"><span>DALAM SOROTAN</span><strong>Water Lilies, 1906</strong><small>Claude Monet · Domain publik</small></div><div className="hero-number">01 <span>/ KOLEKSI STUDI</span></div></section>}
+    {feed === "for-you" && !hasQuery && (
+      <div className="discovery-spotlight">
+        <LandingGallery works={galleryWorks} />
+        <Link href="/art/for-you?style=Impresionisme" className="text-link">Jelajahi koleksi Impresionisme</Link>
+      </div>
+    )}
     {feed === "for-you" && !hasQuery && <div className="inspiration-strip"><span className="strip-icon"><Fingerprint size={27}/></span><div><strong>Selera senimu punya cerita.</strong><p>Kenali warna dan gaya yang membentuk Art DNA-mu.</p></div><Link href={user ? `/creators/${usernameOf(user)}` : "/auth/login"}>Temukan Art DNA-mu <ArrowRight size={16}/></Link><span className="strip-decoration" aria-hidden="true">✳</span></div>}
     <section className="gallery-section" aria-labelledby="gallery-title"><div className="section-heading"><div><div className="eyebrow">{feed === "for-you" ? "RUANG INSPIRASIMU" : "JELAJAHI LEBIH DEKAT"}</div><h2 id="gallery-title">{term ? `Hasil untuk “${term}”` : ({ "for-you": "Sebuah karya, sudut pandang baru.", following: "Dari kreator yang kamu ikuti.", popular: "Karya yang mengundang perhatian.", collaborations: "Dua perspektif, satu karya." })[feed]}</h2></div>{term && <Link className="sample-label" href={`/creators${queryString({ q: term })}`}>Cari kreator <ArrowUpRight size={14}/></Link>}</div>
       {feed !== "following" && feed !== "collaborations" && <Filters key={queryString(query)} query={query} action={`/art/${feed}`}/>}

@@ -18,6 +18,10 @@ export const artworks: Artwork[] = [
   { id: "wheat-field", title: "The Poetâ€™s Garden", artist: "Vincent van Gogh", username: "vincent-van-gogh", year: "1888", medium: "Cat minyak", style: "Postimpresionisme", era: "Modern", image: "garden", colors: ["#a9af4f", "#617347", "#c7c17a", "#497a82", "#e0cb81"], description: "Sebuah taman hadir melalui sapuan yang hidup. Hijau, kuning, dan biru membawa energi alam ke dalam bahasa warna yang personal.", source: "Wikimedia Commons" },
   { id: "at-the-moulin", title: "At the Moulin Rouge", artist: "Henri de Toulouse-Lautrec", username: "toulouse-lautrec", year: "1892â€“1895", medium: "Cat minyak", style: "Postimpresionisme", era: "Modern", image: "moulin", colors: ["#6e795b", "#b5a176", "#3c4640", "#c3bd93", "#8e613f"], description: "Pertemuan manusia dalam cahaya malam Paris. Potongan komposisi dan warna yang tidak biasa mengabadikan suasana yang penuh cerita.", source: "Wikimedia Commons" },
 ];
+
+export const galleryWorks = artworks.map(({ id, title, artist, image, colors, description }) => ({
+  id, title, artist, image, colors, description,
+}));
 export type Query = Record<string, string | string[] | undefined>;
 export const values = (q: Query, key: string) => (Array.isArray(q[key]) ? q[key] : q[key] ? [q[key]] : []) as string[];
 export const first = (q: Query, key: string) => values(q, key)[0] ?? "";

@@ -6,6 +6,11 @@ import type { MemberArtwork } from "./community-model";
 import { periodStart, authoredBy } from "./community-model";
 export const usernameOf = (user: User) => user.username ?? `kreator_${createHash("sha256").update(user.id).digest("hex").slice(0, 12)}`;
 export const imageOf = (a: Artwork) => a.image.startsWith("/") ? a.image : `/art/${a.image}.jpg`;
+export function personalDrafts(userId: string) {
+  return store(data => data.artworks
+    .filter(art => art.owner === userId && art.status === "draft" && !art.projectId)
+    .sort((first, second) => second.updatedAt.localeCompare(first.updatedAt)));
+}
 export function memberCard(a: MemberArtwork, data: Store): Artwork {
   const user = data.users.find(u => u.id === a.owner)!;
   const creators = data.users.filter(u => authoredBy(a,u.id)).map(u => ({ name: u.name, username: usernameOf(u) }));

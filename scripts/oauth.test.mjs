@@ -66,8 +66,17 @@ try {
     assert.equal(failure.location.includes('private'), false);
     assert.equal(data.sessions.length, 1);
   }
+  const studioLogin = new URL((await start(new Request('http://localhost:3100/api/auth/google?next=studio'))).location);
+  globalThis.fetch = async url => Response.json(String(url).includes('/token')
+    ? { access_token: 'studio-token' }
+    : { sub: 'google-user', email: 'artist@example.com', email_verified: true, name: 'Artist' });
+  const studioResult = await callback(new Request(`http://localhost:3100/api/auth/google/callback?code=test&state=${studioLogin.searchParams.get('state')}`));
+  assert.equal(new URL(studioResult.location).pathname, '/studio');
+  assert.equal(jar.has('oauth_next'), false);
+  assert.equal(auth.loginDestination('https://other.example'), '/art/for-you');
   process.env.OAUTH_REDIRECT_URI = 'https://art.example.com/api/auth/google/callback';
   assert.equal((await start(new Request('http://localhost:3100/api/auth/google'))).location, 'https://art.example.com/api/auth/google');
+  assert.equal((await start(new Request('http://localhost:3100/api/auth/google?next=studio'))).location, 'https://art.example.com/api/auth/google?next=studio');
   process.env.OAUTH_REDIRECT_URI = 'https://art.example.com/wrong';
   assert.equal(new URL((await start(new Request('http://localhost:3100/api/auth/google'))).location).searchParams.get('error'), 'config');
   console.log('OAuth checks passed: PKCE, stable callback, session, replay, invalid state, cancellation, canonical origin, invalid config.');

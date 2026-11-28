@@ -1,16 +1,63 @@
+import { randomUUID } from "node:crypto";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Plus, ArrowUpRight, Brush, Layers, Fingerprint } from "lucide-react";
-import { currentUser } from "@/lib/auth";
-import { store } from "@/lib/collab-store";
-import { usernameOf, memberCard } from "@/lib/community";
-import { artDNA, authoredBy } from "@/lib/community-model";
-import { ArtworkCard, Palette } from "@/components/artwork-card";
+import { Brush, FileImage } from "lucide-react";
+import { currentUser, studioLoginHref } from "@/lib/auth";
+import { personalDrafts } from "@/lib/community";
 import { ArtImage } from "@/components/art-image";
-export default async function Studio() {
-  const user = await currentUser(); if (!user) redirect("/auth/login");
-  const data = store(d => ({ drafts: d.artworks.filter(a => authoredBy(a,user.id) && a.status === "draft").sort((a,b) => b.updatedAt.localeCompare(a.updatedAt)), published: d.artworks.filter(a => authoredBy(a,user.id) && a.status === "published").map(a => memberCard(a,d)), dna: artDNA(d.artworks.filter(a => authoredBy(a,user.id))), projects: d.projects.filter(p => p.members.includes(user.id)).length }));
-  return <div className="page-wrap studio-page"><div className="studio-heading"><div><span className="eyebrow">STUDIO KREATIF</span><h1>Ruang untuk prosesmu.</h1><p>Selamat datang, {user.name}. Ide berikutnya dimulai di sini.</p></div><Link href="/studio/artworks/new" className="button primary"><Plus size={17}/>Unggah karya</Link></div><div className="studio-stats"><div><Brush/><strong>{data.published.length}</strong><span>Karya terbit</span></div><div><Layers/><strong>{data.drafts.length}</strong><span>Draf privat</span></div><div><Fingerprint/><strong>{data.projects}</strong><span>Proyek bersama</span></div></div><div className="studio-links"><Link href={`/creators/${usernameOf(user)}`}>Profil & Art DNA <ArrowUpRight size={16}/></Link><Link href="/studio/profile">Edit profil <ArrowUpRight size={16}/></Link><Link href="/studio/collections">Koleksi privat <ArrowUpRight size={16}/></Link><Link href="/collab">Collab Hub <ArrowUpRight size={16}/></Link></div>
-    <section className="collab-panel"><div className="section-heading"><div><span className="eyebrow">MASIH DALAM PROSES</span><h2>Draf karyamu</h2></div><span className="quiet">Hanya kamu yang dapat melihatnya</span></div>{data.drafts.length ? <div className="draft-grid">{data.drafts.map(a => <Link href={`/studio/drafts/${a.id}`} className="draft-card" key={a.id}>{a.asset ? <ArtImage src={`/api/media/${a.id}?v=${a.revision}`} alt={a.title || "Draf tanpa judul"} width="400" height="240"/> : <div className="draft-placeholder"><Brush size={30}/></div>}<div><span className="status-badge">DRAF PRIVAT</span><h3>{a.title || "Karya tanpa judul"}</h3><p>{new Intl.DateTimeFormat("id-ID", { dateStyle: "medium", timeZone: "Asia/Jakarta" }).format(new Date(a.updatedAt))} · Lanjutkan edit ↗</p></div></Link>)}</div> : <p>Belum ada draf. Mulai unggah karya; isianmu akan tersimpan otomatis.</p>}</section>
-    <section className="dna-panel"><div><span className="eyebrow">ART DNA-MU</span><h2>Jejak dari setiap karya.</h2><p>Dihitung dari {data.dna.count} karya terbit.</p></div><div>{data.dna.count ? <>{data.dna.styles.map(s => <div className="dna-row" key={s.style}><span>{s.style}</span><strong>{s.percent}%</strong><progress value={s.percent} max={100}/></div>)}<Palette colors={data.dna.colors}/></> : <p>Terbitkan karya pertamamu untuk mulai mengenali gaya dan paletmu.</p>}</div></section><section><div className="section-heading"><h2>Karya yang sudah berbicara.</h2></div>{data.published.length ? <div className="art-grid">{data.published.map(a => <ArtworkCard artwork={a} key={a.id}/>)}</div> : <p>Belum ada karya terbit. Setiap perjalanan dimulai dari satu karya.</p>}</section></div>;
+import { WorkspaceDrawing } from "@/components/workspace-drawing";
+import { StudioPanelControls } from "@/components/studio-panel-controls";
+import { StudioDraftTitle } from "@/components/studio-draft-title";
+
+export default async function Studio({ searchParams }: { searchParams: Promise<{ draft?: string }> }) {
+  const user = await currentUser();
+  if (!user) redirect(studioLoginHref);
+
+  const { draft: draftId } = await searchParams;
+  const drafts = personalDrafts(user.id);
+  const draft = drafts.find(art => art.id === draftId);
+  if (draftId && !draft) redirect("/studio");
+
+  const id = draft?.id ?? randomUUID();
+  const title = draft?.title || "Karya tanpa judul";
+  const source = draft?.asset ? `/api/media/${id}?v=${draft.revision}` : undefined;
+  const otherDrafts = drafts.filter(art => art.id !== draft?.id);
+  const editTitle = <StudioDraftTitle key={id} id={id} revision={draft?.revision ?? 0} title={draft?.title}/>;
+
+  return (
+    <div className="collab-workbench studio-editor">
+      <WorkspaceDrawing key={id} personal id={id} revision={draft?.revision ?? 0} source={source}
+        drawing={draft?.drawing} artworkAsset={draft?.asset} title={title} titleControl={editTitle} palette={draft?.colors ?? []} sidebar={null}
+        studioHeader={{ title: <div className="collab-project-title">
+          <Brush size={19} aria-hidden="true"/>
+          <div><h1 className="sr-only">{title}</h1>{editTitle}<p>Studio / Kanvas pribadi</p></div>
+        </div>, actions: <>
+          <StudioPanelControls/>
+          {draft && <Link href={`/studio/drafts/${id}`} className="button">Siapkan publikasi draf</Link>}
+        </> }}
+          draftPicker={<section className="collab-pane studio-draft-picker" data-workspace-navigation>
+            <h2>Draf aktif</h2>
+            <div className="collab-art-row">
+              {source ? <ArtImage src={source} alt="" width={40} height={40}/> : <FileImage size={20} aria-hidden="true"/>}
+              <div>{editTitle}<small>{draft ? `Versi ${draft.revision}` : "Belum disimpan"}</small></div>
+            </div>
+            {(draft || otherDrafts.length > 0) && <details>
+              <summary>Pilih draf</summary>
+              <div className="studio-draft-options">
+                {otherDrafts.map(art => (
+                  <Link key={art.id} href={`/studio?draft=${encodeURIComponent(art.id)}`} className="collab-art-row">
+                    {art.asset ? <ArtImage src={`/api/media/${art.id}?v=${art.revision}`} alt="" width={40} height={40}/> : <FileImage size={20} aria-hidden="true"/>}
+                    <div><strong>{art.title || "Karya tanpa judul"}</strong><small>Versi {art.revision}</small></div>
+                  </Link>
+                ))}
+                {draft && <Link href="/studio" className="collab-art-row">Kanvas baru</Link>}
+              </div>
+            </details>}
+          </section>}/>
+      <footer className="collab-workbench-status">
+        <span><span aria-hidden="true"/> Kanvas pribadi</span>
+        <span>{draft ? `Versi ${draft.revision} tersimpan` : "Draf baru"}</span>
+      </footer>
+    </div>
+  );
 }

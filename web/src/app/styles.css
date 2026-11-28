@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-stone-50 text-slate-900;
+    min-width: 280px;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-4 outline-sky-700;
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply rounded-lg px-3 py-2 text-sm font-semibold text-slate-700;
+  }
+
+  .nav-link[aria-current="page"] {
+    @apply bg-sky-100 text-sky-900;
+  }
+
+  .skip-link {
+    @apply absolute top-2 left-2 z-10 -translate-y-20 rounded-lg bg-white px-4 py-2 focus:translate-y-0;
+  }
+
+  .page-title {
+    @apply font-serif text-4xl tracking-tight sm:text-5xl;
+  }
+}

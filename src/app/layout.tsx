@@ -1,6 +1,8 @@
 ﻿import type { Metadata } from "next";
 import { Shell } from "@/components/shell";
+import "./theme.css";
 import "./globals.css";
+import "./interface.css";
 import { currentUser } from "@/lib/auth";
 import { usernameOf } from "@/lib/community";
 import { store } from "@/lib/collab-store";

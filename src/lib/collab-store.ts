@@ -4,10 +4,15 @@ import { join } from "node:path";
 import { randomUUID } from "node:crypto";
 
 import type { MemberArtwork, Collection, CommunityComment, Notice } from "./community-model";
-export type User = { id: string; name: string; email: string; open: boolean; username?: string; bio?: string; location?: string; website?: string };
-export type Invitation = { id: string; sender: string; recipient: string; type: string; deadline: string; license: string; idea: string; status: "pending" | "accepted" | "rejected" | "cancelled" };
-export type Project = { id: string; invitation: string; members: string[]; messages: { id: string; author: string; text: string; at: string; clientMessageId?: string }[]; candidateId?: string; approvals?: { user: string; candidateId: string; revision: number; at: string }[]; progress?: number; history?: { user: string; progress: number; at: string }[]; publishedId?: string };
-export type Store = { users: User[]; sessions: { hash: string; user: string; expires: number }[]; invitations: Invitation[]; projects: Project[]; artworks: MemberArtwork[]; follows: { user: string; creator: string }[]; appreciations: { user: string; artwork: string; at: string }[]; collections: Collection[]; comments: CommunityComment[]; notifications: Notice[] };
+import type { SharedCanvas } from "./shared-canvas";
+export type User = { id: string; name: string; email: string; open: boolean; username?: string; bio?: string; location?: string; website?: string; photo?: string };
+export type Invitation = {
+  id: string; sender: string; recipient: string; type: string; deadline: string; license: string;
+  idea: string; status: "pending" | "accepted" | "rejected" | "cancelled";
+  canvas?: Pick<MemberArtwork, "title" | "width" | "height" | "colors"> & { asset: string };
+};
+export type Project = { id: string; invitation: string; members: string[]; messages: { id: string; author: string; text: string; at: string; clientMessageId?: string }[]; candidateId?: string; approvals?: { user: string; candidateId: string; revision: number; at: string }[]; progress?: number; history?: { user: string; progress: number; at: string }[]; publishedId?: string; canvas?: SharedCanvas };
+export type Store = { users: User[]; passwords?: { user: string; salt: string; digest: string }[]; sessions: { hash: string; user: string; expires: number }[]; invitations: Invitation[]; projects: Project[]; artworks: MemberArtwork[]; follows: { user: string; creator: string }[]; appreciations: { user: string; artwork: string; at: string }[]; collections: Collection[]; comments: CommunityComment[]; notifications: Notice[] };
 // Local, single-server persistence. Use a transactional shared database before scaling.
 export function store<T>(fn: (data: Store) => T, write = false): T {
   const directory = process.env.VERCEL ? "/tmp/.data" : join(process.cwd(), ".data");

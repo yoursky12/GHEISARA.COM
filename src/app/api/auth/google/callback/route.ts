@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { cookieOptions, hash, oauthReady } from "@/lib/auth";
+import { cookieOptions, hash, loginDestination, oauthReady } from "@/lib/auth";
 import { store } from "@/lib/collab-store";
 
 export async function GET(request: Request) {
@@ -10,8 +10,10 @@ export async function GET(request: Request) {
   const state = jar.get("oauth_state")?.value;
   const verifier = jar.get("oauth_verifier")?.value;
   const redirectUri = jar.get("oauth_redirect_uri")?.value;
+  const next = jar.get("oauth_next")?.value;
   jar.delete("oauth_state"); jar.delete("oauth_verifier"); jar.delete("oauth_redirect_uri");
-  const fail = (reason = "oauth") => NextResponse.redirect(new URL(`/auth/login?error=${reason}`, url));
+  jar.delete("oauth_next");
+  const fail = (reason = "oauth") => NextResponse.redirect(new URL(`/auth/login?error=${reason}${next === "studio" ? "&next=studio" : ""}`, url));
   if (!oauthReady()) return fail("config");
   if (url.searchParams.get("error") === "access_denied") return fail("cancelled");
   if (!state || !verifier || !redirectUri || url.searchParams.get("state") !== state) return fail("session");
@@ -40,6 +42,6 @@ export async function GET(request: Request) {
       data.sessions.push({ hash: hash(session), user: user.id, expires: Date.now() + 7 * 86400000 });
     }, true);
     jar.set("geishara_session", session, { ...cookieOptions, maxAge: 7 * 86400 });
-    return NextResponse.redirect(new URL("/art/for-you", redirectUri));
+    return NextResponse.redirect(new URL(loginDestination(next), redirectUri));
   } catch { return fail(); }
 }

@@ -1,0 +1,33 @@
+:root {
+  color-scheme: light dark;
+  font-size: 14px;
+  --font-ui: "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-ui);
+  --heading-ink: light-dark(#09090b, #fafafa);
+  --ink: light-dark(#1f2937, #e4e4e7);
+  --muted: light-dark(#52525b, #a1a1aa);
+  --line: light-dark(rgb(15 23 42 / 8%), rgb(255 255 255 / 8%));
+  --surface: light-dark(#f8fafc, #09090b);
+  --panel: light-dark(#fff, #111113);
+  --panel-muted: light-dark(#f4f5f7, #202024);
+  --action: light-dark(#1f2937, #fafafa);
+  --action-text: light-dark(#fff, #111827);
+  --action-hover: light-dark(#111827, #e4e4e7);
+  --accent: #3b82f6;
+  --accent-ink: light-dark(#1d4ed8, #93c5fd);
+  --accent-surface: light-dark(#ebf3ff, #18273d);
+  --card-shadow: 0 1px 4px light-dark(rgb(15 23 42 / 4%), transparent);
+  --overlay-shadow: 0 12px 36px rgb(0 0 0 / 14%);
+  --ease-ui: cubic-bezier(.22, 1, .36, 1);
+  --header-bg: var(--panel);
+  --footer-bg: var(--panel);
+  --chrome-line: var(--line);
+  --gallery-orange: var(--action);
+  --gallery-orange-hover: var(--action-hover);
+  --gallery-orange-text: var(--accent-ink);
+  accent-color: var(--accent);
+  text-rendering: optimizeLegibility;
+}
+
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
